@@ -1,95 +1,89 @@
 package co.nstant.in.dec64;
 
-import java.math.BigDecimal;
-
 /**
  * A Java implementation of Dec64
  * 
- * @see http://dec64.com/
+ * http://dec64.com/
  */
-public class Dec64 implements Comparable<Dec64> {
+public class Dec64 {
 
-	private long coefficient;
-	private int exponent;
+    public static final Dec64 ZERO = new Dec64(0, 0);
+    public static final Dec64 NaN = new Dec64(0, -128);
+    private final long coefficient;
+    private final long exponent;
 
-	public static long MIN_COEFFICIENT = -36028797018963968L;
-	public static long MAX_COEFFICIENT = 36028797018963967L;
+    public static long MIN_COEFFICIENT = -36028797018963968L;
+    public static long MAX_COEFFICIENT = 36028797018963967L;
 
-	public static int MIN_EXPONENT = -127;
-	public static int MAX_EXPONENT = 127;
+    public static int MIN_EXPONENT = -127;
+    public static int MAX_EXPONENT = 127;
 
-	// Constructors -----------------------------------------------------------
+    // Constructors -----------------------------------------------------------
 
-	public Dec64(byte[] bytes) {
-	}
+    public Dec64(long coefficient, long exponent) {
+        if (coefficient == 0) {
+            exponent = 0;
+        }
 
-	public Dec64(BigDecimal value) {
-	}
+        this.coefficient = coefficient;
+        this.exponent = exponent;
+    }
 
-	public Dec64(float value) {
-	}
+    // Getters ----------------------------------------------------------------
 
-	public Dec64(double value) {
-	}
+    public long coefficient() {
+        return coefficient;
+    }
 
-	// Getters ----------------------------------------------------------------
+    public long exponent() {
+        return exponent;
+    }
 
-	public long getCoefficient() {
-		return coefficient;
-	}
+    // Comparison -------------------------------------------------------------
 
-	public long getExponent() {
-		return exponent;
-	}
+    public boolean equal(Dec64 comparahend, Dec64 comparator) {
+        return false;
+    }
 
-	public boolean isNaN() {
-		return false;
-	}
+    public boolean isInteger() {
+        return false;
+    }
 
-	// Converters -------------------------------------------------------------
+    public boolean isNaN() {
+        return false;
+    }
 
-	public BigDecimal toBigDecimal() {
-		BigDecimal bigCoefficient = new BigDecimal(coefficient);
-		BigDecimal bigDecimal = bigCoefficient.multiply(BigDecimal.TEN.pow(exponent));
-		return bigDecimal;
-	}
+    public boolean isZero() {
+        return false;
+    }
 
-	public float toFloat() {
-		return toBigDecimal().floatValue();
-	}
+    public boolean less(Dec64 comparahend, Dec64 comparator) {
+        return false;
+    }
 
-	public double toDouble() {
-		return toBigDecimal().doubleValue();
-	}
+    // Converters -------------------------------------------------------------
 
-	public byte[] toBytes() {
-		return null;
-	}
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 
-	@Override
-	public String toString() {
-		return super.toString();
-	}
+    // Comparison -------------------------------------------------------------
 
-	// Comparison -------------------------------------------------------------
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object instanceof Dec64) {
+            Dec64 other = (Dec64) object;
+            return coefficient == other.coefficient && exponent == other.exponent;
+        }
+        return false;
+    }
 
-	public int compareTo(Dec64 other) {
-		if (other == null) {
-			throw new NullPointerException();
-		}
-		return toBigDecimal().compareTo(other.toBigDecimal());
-	}
-
-	@Override
-	public boolean equals(Object otherObject) {
-		if (this == otherObject) {
-			return true;
-		}
-		if (otherObject instanceof Dec64) {
-			Dec64 other = (Dec64) otherObject;
-			return coefficient == other.coefficient && exponent == other.exponent;
-		}
-		return false;
-	}
+    public long toLong() {
+        return (coefficient << 8) | exponent;
+    }
 
 }
